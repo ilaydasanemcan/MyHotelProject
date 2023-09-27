@@ -9,5 +9,8 @@ namespace HotelProject.BussinessLayer.Abstract
 {
     public interface IBookingService : IGenericService<Booking>
     {
+        void BookingStatusChangeApproved(int id);
+        void BookingStatusChangeCancel(int id);
+        void BookingStatusChangeWait(int id);
     }
 }

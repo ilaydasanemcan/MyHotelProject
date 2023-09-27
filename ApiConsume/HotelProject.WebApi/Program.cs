@@ -17,6 +17,8 @@ builder.Services.AddScoped<ITestimonialDal, EfTestimonialDal>();
 builder.Services.AddScoped<IServiceDal, EfServiceDal>();
 builder.Services.AddScoped<IAboutDal, EfAboutDal>();
 builder.Services.AddScoped<IBookingDal, EfBookingDal>();
+builder.Services.AddScoped<IContactDal, EfContactDal>();
+builder.Services.AddScoped<IGuestDal, EfGuestDal>();
 
 builder.Services.AddScoped<IRoomService, RoomManager>();
 builder.Services.AddScoped<IStaffService, StaffManager>();
@@ -25,6 +27,8 @@ builder.Services.AddScoped<ITestimonialService, TestimonialManager>();
 builder.Services.AddScoped<IServiceService, ServiceManager>();
 builder.Services.AddScoped<IAboutService, AboutManager>();
 builder.Services.AddScoped<IBookingService, BookingManager>();
+builder.Services.AddScoped<IContactService, ContactManager>();
+builder.Services.AddScoped<IGuestService, GuestManager>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 

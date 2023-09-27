@@ -1,0 +1,44 @@
+﻿@model List<ResultRoomDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Oda Numarası</th>
+        <th>Oda Başlığı</th>
+        <th>Oda Ücreti</th>
+        <th>Banyo Sayısı</th>
+        <th>Yatak Sayısı</th>
+        <th>Wifi</th>
+        <th>Açıklama</th>
+        <th>Sil</th>
+        <th>Güncelle</th>
+
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <th>@item.RoomId</th>
+            <th>@item.RoomNumber</th>
+            <td>@item.Title</td>
+            <td>@item.Price</td>
+            <td>@item.BathCount</td>
+            <td>@item.BedCount</td>
+            <td>@item.Wifi</td>
+            @if(item.Description.Length>20)
+            {
+                <td>@item.Description.Substring(0,20)...</td>
+            }
+            else
+            {
+                <td>@item.Description</td>
+            }
+            <td><a href="/AdminRoom/DeleteRoom/@item.RoomId" class="btn mb-1 btn-rounded btn-danger">Sil</a></td>
+            <td><a href="/AdminRoom/UpdateRoom/@item.RoomId" class="btn mb-1 btn-rounded btn-success">Güncelle</a></td>
+        </tr>
+    }
+</table>
+<a href="/AdminRoom/AddRoom" class="btn mb-1 btn-rounded btn-info">Yeni Oda Girişi</a>

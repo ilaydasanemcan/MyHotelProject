@@ -1,0 +1,57 @@
+﻿@model List<ResultBookingDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+    int count = 0;
+}
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Misafir</th>
+                <th>Giriş Tarihi</th>
+                <th>Çıkış Tarihi</th>
+                <th>Durum</th>
+                <th>Onayla</th>
+                <th>İptal Et</th>
+                <th>Beklet</th>
+                <th>Güncelle</th>
+                <th>Detaylar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                count++;
+                <tr>
+                    <th>@count</th>
+                    <td>@item.Name</td>
+                    <td>@(((DateTime)item.CheckIn).ToString("dd-MMM-yyyy"))</td>
+                    <td>@(((DateTime)item.CheckOut).ToString("dd-MMM-yyyy"))</td>
+                    @if(item.Status=="Onaylandı")
+                    {
+                        <td><span class="badge badge-primary px-2">@item.Status</span></td>
+                    }
+                    @if (item.Status == "İptal Edildi")
+                    {
+                        <td><span class="badge badge-danger px-2">@item.Status</span></td>
+                    }
+                    @if (item.Status == "Onay Bekliyor")
+                    {
+                        <td><span class="badge badge-warning px-2">@item.Status</span></td>
+                    }
+                    <td><a href="/AdminBooking/ApprovedReservation/@item.BookingID" class="btn btn-outline-primary"><i class="fas fa-check"></i></a></td>
+                    <td><a href="/AdminBooking/CancelReservation/@item.BookingID" class="btn btn-outline-danger"><i class="fas fa-times"></i></a></td>
+                    <td><a href="/AdminBooking/WaitReservation/@item.BookingID" class="btn btn-outline-warning"><i class="fas fa-hourglass"></i></a></td>
+                    <td><a href="/AdminBooking/UpdateBooking/@item.BookingID" class="btn btn-outline-info"><i class="fas fa-edit"></i></a></td>
+                    <td><a href="/AdminBooking/DetailBooking/@item.BookingID" class="btn btn-outline-dark"><i class="fas fa-info"></i></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
