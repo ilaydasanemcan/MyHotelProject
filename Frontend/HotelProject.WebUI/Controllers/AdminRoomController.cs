@@ -1,9 +1,12 @@
-﻿using HotelProject.WebUI.Dtos.AboutUsDto;
+﻿using HotelProject.DataAccessLayer.Migrations;
+using HotelProject.WebUI.Dtos.AboutUsDto;
 using HotelProject.WebUI.Dtos.RoomDto;
 using HotelProject.WebUI.Models.Staff;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace HotelProject.WebUI.Controllers
 {
@@ -36,13 +39,27 @@ namespace HotelProject.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddRoom(CreateRoomDto createRoomDto)
+        public async Task<IActionResult> AddRoom(CreateRoomDto createRoomDto, IFormFile file)
         {
+            var stream = new MemoryStream();
+            await file.CopyToAsync(stream);
+            var bytes = stream.ToArray();
+
+            ByteArrayContent byteArrayContent = new ByteArrayContent(bytes);
+            byteArrayContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+            MultipartFormDataContent multipartFormDataContent = new MultipartFormDataContent();
+            multipartFormDataContent.Add(byteArrayContent, "file", file.FileName);
+            var httpclient = new HttpClient();
+            var responseMessage = await httpclient.PostAsync("https://localhost:7127/api/FileImage", multipartFormDataContent);
+            var result= await responseMessage.Content.ReadAsStringAsync();
+
             var client = _httpClientFactory.CreateClient();
+            createRoomDto.RoomCoverImage = "/hotel-html-template/img/"+ result;
             var jsonData = JsonConvert.SerializeObject(createRoomDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7127/api/Room", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var responseMessage2 = await client.PostAsync("https://localhost:7127/api/Room", stringContent);
+            
+            if (responseMessage.IsSuccessStatusCode && responseMessage2.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index");
             }

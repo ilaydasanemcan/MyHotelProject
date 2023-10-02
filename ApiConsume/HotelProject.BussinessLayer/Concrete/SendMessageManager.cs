@@ -18,6 +18,11 @@ namespace HotelProject.BussinessLayer.Concrete
             _sendMessageDal = sendMessageDal;
         }
 
+        public int GetSendMessageCount()
+        {
+            return _sendMessageDal.GetSendMessageCount();
+        }
+
         public void TDelete(SendMessage entity)
         {
             _sendMessageDal.Delete(entity);

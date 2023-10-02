@@ -2,9 +2,12 @@
 using HotelProject.WebUI.Dtos.ContactDto;
 using HotelProject.WebUI.Dtos.SendMessageDto;
 using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using MimeKit;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Text;
 
@@ -23,10 +26,12 @@ namespace HotelProject.WebUI.Controllers
         {
             var client = _httpClientFactory.CreateClient();
             var responseMessage = await client.GetAsync("https://localhost:7127/api/Contact");
+
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
                 var values = JsonConvert.DeserializeObject<List<ResultContactDto>>(jsonData);
+                await GetViewBags();
                 return View(values);
             }
             return View();
@@ -36,10 +41,13 @@ namespace HotelProject.WebUI.Controllers
         {
             var client = _httpClientFactory.CreateClient();
             var responseMessage = await client.GetAsync($"https://localhost:7127/api/Contact/{id}");
+
+
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
                 var values = JsonConvert.DeserializeObject<ResultContactDto>(jsonData);
+                await GetViewBags();
                 return View(values);
             }
             return View();
@@ -49,10 +57,12 @@ namespace HotelProject.WebUI.Controllers
         {
             var client = _httpClientFactory.CreateClient();
             var responseMessage = await client.GetAsync($"https://localhost:7127/api/SendMessage/{id}");
+
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
                 var values = JsonConvert.DeserializeObject<ResultSendMessageDto>(jsonData);
+                await GetViewBags();
                 return View(values);
             }
             return View();
@@ -66,6 +76,7 @@ namespace HotelProject.WebUI.Controllers
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
                 var values = JsonConvert.DeserializeObject<List<ResultSendMessageDto>>(jsonData);
+                await GetViewBags();
                 return View(values);
             }
             return View();
@@ -73,6 +84,7 @@ namespace HotelProject.WebUI.Controllers
 
         public PartialViewResult SideBarAdminContactPartial()
         {
+
             return PartialView();
         }
 
@@ -82,8 +94,9 @@ namespace HotelProject.WebUI.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateMessage()
+        public async Task<IActionResult> CreateMessageAsync()
         {
+            await GetViewBags();
             return View();
         }
 
@@ -119,7 +132,24 @@ namespace HotelProject.WebUI.Controllers
                 smptClient.DisconnectAsync(true);
                 return RedirectToAction("Inbox", "AdminContact");
             }
+            await GetViewBags();
             return View();
+        }
+
+        public async Task GetViewBags()
+        {
+            var client2 = _httpClientFactory.CreateClient();
+            var responseMessage2 = await client2.GetAsync("https://localhost:7127/api/Contact/GetContactCount");
+
+            var client3 = _httpClientFactory.CreateClient();
+            var responseMessage3 = await client3.GetAsync("https://localhost:7127/api/SendMessage/GetSendMessageCount");
+            if (responseMessage2.IsSuccessStatusCode && responseMessage3.IsSuccessStatusCode)
+            {
+                var jsonData2 = await responseMessage2.Content.ReadAsStringAsync();
+                ViewBag.contactCount = jsonData2;
+                var jsonData3 = await responseMessage3.Content.ReadAsStringAsync();
+                ViewBag.sendMessageCount = jsonData3;
+            }
         }
     }
 }

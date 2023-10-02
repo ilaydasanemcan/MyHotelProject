@@ -4,6 +4,7 @@ using HotelProject.DataAccessLayer.Abstract;
 using HotelProject.DataAccessLayer.Concrete;
 using HotelProject.DataAccessLayer.EntityFramework;
 using HotelProject.EntityLayer.Concrete;
+using HotelProject.WebApi.Controllers;
 using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,9 @@ builder.Services.AddScoped<IBookingDal, EfBookingDal>();
 builder.Services.AddScoped<IContactDal, EfContactDal>();
 builder.Services.AddScoped<IGuestDal, EfGuestDal>();
 builder.Services.AddScoped<ISendMessageDal, EfSendMessageDal>();
+builder.Services.AddScoped<IContactCategoryDal, EfContactCategoryDal>();
+builder.Services.AddScoped<IWorkLocationDal, EfWorkLocationDal>();
+builder.Services.AddScoped<IAppUserDal, EfAppUserDal>();
 
 builder.Services.AddScoped<IRoomService, RoomManager>();
 builder.Services.AddScoped<IStaffService, StaffManager>();
@@ -31,6 +35,9 @@ builder.Services.AddScoped<IBookingService, BookingManager>();
 builder.Services.AddScoped<IContactService, ContactManager>();
 builder.Services.AddScoped<IGuestService, GuestManager>();
 builder.Services.AddScoped<ISendMessageService, SendMessageManager>();
+builder.Services.AddScoped<IContactCategoryService, ContactCategoryManager>();
+builder.Services.AddScoped<IWorkLocationService, WorkLocationManager>();
+builder.Services.AddScoped<IAppUserService, AppUserManager>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
@@ -43,7 +50,8 @@ builder.Services.AddCors(opt =>
 });
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

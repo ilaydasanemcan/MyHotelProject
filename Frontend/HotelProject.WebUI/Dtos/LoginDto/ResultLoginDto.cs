@@ -4,9 +4,10 @@ namespace HotelProject.WebUI.Dtos.LoginDto
 {
     public class ResultLoginDto
     {
-        [Required(ErrorMessage ="Lütfen Kullanıcı Adınızı Giriniz.")]
+        [Required(ErrorMessage = "Kullanıcı Adını Giriniz")]
         public string UserName { get; set; }
-        [Required(ErrorMessage = "Lütfen Şifrenizi Giriniz.")]
+
+        [Required(ErrorMessage = "Şifreyi Giriniz")]
         public string Password { get; set; }
     }
 }

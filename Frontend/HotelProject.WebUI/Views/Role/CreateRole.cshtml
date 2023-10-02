@@ -1,0 +1,12 @@
+﻿@model CreateAppRoleDto
+@{
+    ViewData["Title"] = "CreateRole";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<form method="post">
+    <label>Role Adı</label>
+    <input type="text" asp-for="Name" class="form-control" />
+    <br />
+    <button class="btn btn-primary">Rol Ekle</button>
+</form>

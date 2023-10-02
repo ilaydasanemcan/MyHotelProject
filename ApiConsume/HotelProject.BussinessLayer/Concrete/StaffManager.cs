@@ -28,9 +28,19 @@ namespace HotelProject.BussinessLayer.Concrete
             return _staffDal.GetById(id);
         }
 
+        public List<Staff> TGetLast4Staff()
+        {
+            return _staffDal.GetLast4Staff();
+        }
+
         public List<Staff> TGetList()
         {
             return _staffDal.GetList();
+        }
+
+        public int TGetStaffCount()
+        {
+            return _staffDal.GetStaffCount();
         }
 
         public void TInsert(Staff entity)

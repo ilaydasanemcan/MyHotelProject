@@ -1,0 +1,28 @@
+﻿@model List<ResultWorkLocationDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>İş Yeri İsmi</th>
+        <th>Şehir</th>
+        <th>Sil</th>
+        <th>Güncelle</th>
+
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <th>@item.WorkLocationId</th>
+            <th>@item.WorkLocationName</th>
+            <td>@item.WorkLocationCityName</td>
+            <td><a href="/AdminWorkLocation/DeleteWorkLocation/@item.WorkLocationId" class="btn mb-1 btn-rounded btn-danger">Sil</a></td>
+            <td><a href="/AdminWorkLocation/UpdateWorkLocation/@item.WorkLocationId" class="btn mb-1 btn-rounded btn-success">Güncelle</a></td>
+        </tr>
+    }
+</table>
+<a href="/AdminWorkLocation/AddWorkLocation" class="btn mb-1 btn-rounded btn-info">Yeni İş Yeri Girişi</a>
+
