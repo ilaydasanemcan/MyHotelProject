@@ -30,25 +30,25 @@ namespace HotelProject.WebUI.ViewComponents.AdminDashboard
                 ViewBag.instagramFollowing = value.following;
             }
 
-            var client2 = new HttpClient();
-            var request2 = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri("https://twitter32.p.rapidapi.com/getProfile?username=murattyucedag"),
-                Headers =
-                {
-                    { "X-RapidAPI-Key", "8e76fea71amsh482e14f1c0102a6p180b9ajsn6fb9f094627b" },
-                    { "X-RapidAPI-Host", "twitter32.p.rapidapi.com" },
-                },
-            };
-            using (var response2 = await client.SendAsync(request2))
-            {
-                response2.EnsureSuccessStatusCode();
-                var body2 = await response2.Content.ReadAsStringAsync();
-                var value2=JsonConvert.DeserializeObject<ResultTwitterFollowersDto> (body2);
-                ViewBag.twitterFollowers = value2.data.user_info.followers_count;
-                ViewBag.twitterFollowing = value2.data.user_info.friends_count;
-            }
+            //var client2 = new HttpClient();
+            //var request2 = new HttpRequestMessage
+            //{
+            //    Method = HttpMethod.Get,
+            //    RequestUri = new Uri("https://twitter32.p.rapidapi.com/getProfile?username=murattyucedag"),
+            //    Headers =
+            //    {
+            //        { "X-RapidAPI-Key", "8e76fea71amsh482e14f1c0102a6p180b9ajsn6fb9f094627b" },
+            //        { "X-RapidAPI-Host", "twitter32.p.rapidapi.com" },
+            //    },
+            //};
+            //using (var response2 = await client.SendAsync(request2))
+            //{
+            //    response2.EnsureSuccessStatusCode();
+            //    var body2 = await response2.Content.ReadAsStringAsync();
+            //    var value2=JsonConvert.DeserializeObject<ResultTwitterFollowersDto> (body2);
+            //    ViewBag.twitterFollowers = value2.data.user_info.followers_count;
+            //    ViewBag.twitterFollowing = value2.data.user_info.friends_count;
+            //}
 
             var client3 = new HttpClient();
             var request3 = new HttpRequestMessage
